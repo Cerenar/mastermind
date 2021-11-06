@@ -4,26 +4,35 @@ module Mastermind
 
     def initialize(grid = default_grid)
       @grid = grid
-      @secret_code = [2, 1, 2, 1]
+      @secret_code = ["2", "1", "2", "1"]
     end
 
     # when a player makes a guess, update the guess row
     def update(guess, attempt)
-      grid[grid.length-attempt] = guess
+      grid[grid.length - attempt] = guess
     end
 
     def check_guess(guess)
-      checker = ''
-      guess.each_index do |peg|
-        if secret_code[peg] == guess[peg]
-          checker += 'R'
-        elsif secret_code.any?(guess[peg])
-          checker += 'W'
-        else
-          checker += '-'
-        end
-      end
-      checker
+      # miss = 4
+      black = count_black(guess)
+      white = count_white(guess)
+      p "Black #{black}"
+      # miss -= white
+      white -= black
+
+      p black
+      p white
+      # p miss
+
+      return false if black == 4
+
+      ('R' * black).concat('W' * white)
+    end
+
+    private
+
+    def default_grid
+      Array.new(12) { Array.new(4) }
     end
 
     def count_black(guess)
@@ -37,7 +46,8 @@ module Mastermind
     end
 
     def count_white(guess)
-      temp = secret_code
+      temp = []
+      temp.replace(secret_code)
       count = 0
       guess.each do |peg|
         if temp.include?(peg)
@@ -47,14 +57,5 @@ module Mastermind
       end
       count
     end
-    
-    private
-
-    def default_grid
-      Array.new(12) { Array.new(4) }
-    end
-
-    
-
   end
 end
