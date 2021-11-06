@@ -24,17 +24,21 @@ module Mastermind
       ('R' * black).concat('W' * white).concat('_' * miss)
     end
 
-    def formatted_grid(guess)
-      grid.each do |row|
+    def formatted_grid(checked_guesses)
+      grid.each_index do |row|
         print '| '
-        row.each do |peg|
+        grid[row].each do |peg|
           if peg.nil?
             print '_ '
           else
             print "#{peg} "
           end
         end
-        puts '| '
+        if checked_guesses[row] != false
+          puts "| #{checked_guesses[row]}"
+        else
+          puts '| RRRR'
+        end
       end
     end
 

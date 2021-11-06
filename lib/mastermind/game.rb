@@ -15,21 +15,19 @@ module Mastermind
 
     def game_over_message(guess, attempt)
       return 'You win!' if board.check_guess(guess) == false
-      return 'You lose. Better luck next time!' if attempt >= 12
-
-      board.check_guess(guess)
+      'You lose. Better luck next time!' if attempt >= 12
     end
 
     def play
       attempt = 0
+      checked_guesses = Array.new(12) { '' }
       while true
-        puts ''
         puts ask_guess
         guess = get_guess
-        puts ''
         attempt += 1
+        checked_guesses[checked_guesses.length - attempt] = board.check_guess(guess)
         board.update(guess, attempt)
-        board.formatted_grid(guess)
+        board.formatted_grid(checked_guesses)
         puts game_over_message(guess, attempt)
         return if board.check_guess(guess) == false
         return if attempt >= 12
