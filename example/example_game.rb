@@ -1,4 +1,4 @@
 require_relative '../lib/mastermind.rb'
 
-puts 'Welcome to Mastermind'
+print 'Welcome to Mastermind'
 Mastermind::Game.new.play

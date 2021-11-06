@@ -4,7 +4,7 @@ module Mastermind
 
     def initialize(grid = default_grid)
       @grid = grid
-      @secret_code = ["2", "1", "2", "1"]
+      @secret_code = [Random.rand(1..6).to_s, Random.rand(1..6).to_s, Random.rand(1..6).to_s, Random.rand(1..6).to_s]
     end
 
     # when a player makes a guess, update the guess row
@@ -13,20 +13,29 @@ module Mastermind
     end
 
     def check_guess(guess)
-      # miss = 4
+      miss = 4
       black = count_black(guess)
       white = count_white(guess)
-      p "Black #{black}"
-      # miss -= white
+      miss -= white
       white -= black
-
-      p black
-      p white
-      # p miss
 
       return false if black == 4
 
-      ('R' * black).concat('W' * white)
+      ('R' * black).concat('W' * white).concat('_' * miss)
+    end
+
+    def formatted_grid(guess)
+      grid.each do |row|
+        print '| '
+        row.each do |peg|
+          if peg.nil?
+            print '_ '
+          else
+            print "#{peg} "
+          end
+        end
+        puts '| '
+      end
     end
 
     private
